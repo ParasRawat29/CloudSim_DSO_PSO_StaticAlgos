@@ -24,10 +24,10 @@ public class Swarm{
 	double r1 = rand.nextDouble();
 	double r2 = rand.nextDouble();
 	int nt ,nv;
-	public static int mode = 2;
+	public static int mode = 0;
 	/**
 	 * mode = 0 -> makespan
-	 * mode = 1 -> average execution time
+	 * mode = 1 -> total execution time
 	 * mode = 2 -> throughput
 	 * 
 	 * */

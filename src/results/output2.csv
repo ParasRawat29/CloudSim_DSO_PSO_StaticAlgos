@@ -1,4 +1,0 @@
-"Algorithmn","No of Cloudlets","No. of Virtual Machine","Average Waiting Time","Average Execution Time","Makespan","Average Response Time","Throughput"
-"FCFS","1000","100","2.58","2.68","7.58207558989349","0.01","131.89"
-"SJF","1000","100","2.58","2.68","7.58207558989349","0.01","131.89"
-"Max-Min","1000","100","2.58","2.68","7.58207558989349","0.01","131.89"

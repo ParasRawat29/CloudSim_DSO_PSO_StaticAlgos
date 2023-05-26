@@ -15,7 +15,7 @@ public class VmsCreator {
 		// VM description
 		int vmid = 0;
 		// int mips = 1000;
-		int[] mips = { 500, 500, 1500, 1500, 2500, 2500 };
+//		int[] mips = { 500, 500, 1500, 1500, 2500, 2500 };
 		long size = 1000; // image size (MB)
 		int ram = 512; // vm memory (MB)
 		long bw = 1000;
@@ -24,11 +24,11 @@ public class VmsCreator {
 
 		for (vmid = 0; vmid < reqVms; vmid++) {
 			// add the VMs to the vmList
-			vmlist.add(new Vm(vmid, brokerId, mips[vmid], pesNumber, ram, bw, size, vmm,
+			vmlist.add(new Vm(vmid, brokerId, Utils.Mips[vmid%Utils.Mips.length], pesNumber, ram, bw, size, vmm,
 					new CloudletSchedulerSpaceShared()));
 		}
 
-		System.out.println("VmsCreator function Executed... SUCCESS: ");
+//		System.out.println("VmsCreator function Executed... SUCCESS: ");
 		return vmlist;
 
 	}

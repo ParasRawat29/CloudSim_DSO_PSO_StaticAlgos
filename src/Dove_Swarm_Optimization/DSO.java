@@ -1,7 +1,5 @@
 package Dove_Swarm_Optimization;
 
-import java.text.DecimalFormat;
-import java.util.Arrays;
 import java.util.Calendar;
 import java.util.List;
 
@@ -21,8 +19,8 @@ public class DSO{
 	/** The vmlist. */
 	private static List<Vm> vmlist;
 
-	private static int reqTasks = 100;
-	private static int reqVms = 6;
+	private static int reqTasks = 5000;
+	private static int reqVms = 50;
 	private static WriteToCsv writeTofileObj;
 	
 	private static DSOBroker broker;
@@ -30,8 +28,8 @@ public class DSO{
 	
 	
 	public static void main(String[]args) {
-		writeTofileObj = new WriteToCsv("C:\\Users\\Home\\Desktop\\Cloudsim-Code-master\\src\\results\\output.csv",
-				"DSO");
+		writeTofileObj = new WriteToCsv("C:\\Users\\Home\\Desktop\\cloudsim _DSO_PSO_and_StaticAlgos\\src\\results\\output.csv",
+				"PSO");
 		Log.printLine("Starting DSO...");
 		
 		try {
@@ -59,11 +57,12 @@ public class DSO{
 			CloudSim.startSimulation();
 			
 			List<Cloudlet> newList = broker.getCloudletReceivedList();
+			
 
 			CloudSim.stopSimulation();
 
-			printCloudletList(newList);
-			
+			CalculateSimulationResults.calulate(newList, vmlist, reqTasks, reqVms,null);
+
 			
 			Log.printLine("DSO finished!");
 		}catch(Exception e) {
@@ -113,7 +112,7 @@ public class DSO{
          return maxFinishTime;
     }
     
-    public double calculatePredictedAverageExecutionTime(double[][] position) {
+    public double calculatePredictedTotalExecutionTime(double[][] position) {
     	double [] tempPosition = new double[position.length];
 	   	
     	for(int i=0 ; i<position.length ; i++) {
@@ -130,16 +129,15 @@ public class DSO{
     		totalExecutionTime += ETC_MATRIX[i][(int)tempPosition[i]];
         }
     	
-    	return totalExecutionTime/reqTasks;
-    	
+    	return totalExecutionTime;
     	
     }
     
     
     public double calculatePredictedThroughput(double[][] position) {
     	double makespan = calculatePredictedMakespan(position);
-    	System.out.println("oo " + makespan/position.length);
-    	return (double)(makespan/position.length);
+//    	System.out.println("oo " + makespan/position.length);
+    	return (double)((double)position.length/makespan);
     }
     
 	
@@ -161,47 +159,6 @@ public class DSO{
 	}
 	
 	
-	private static void printCloudletList(List<Cloudlet> list) {
-		int size = list.size();
-		Cloudlet cloudlet;
-
-		double totalWT = 0.0;
-		double totalET = 0.0;
-		double makespan = 0.0;
-		double totalResponseTime = 0.0;
-
-		String indent = "    ";
-		Log.printLine();
-		Log.printLine("========== OUTPUT ==========");
-		Log.printLine("Cloudlet ID" + indent + "STATUS" + indent + "Data center ID" + indent + "VM ID" + indent + "Time"
-				+ indent + "Start Time" + indent + "Finish Time" + indent + "waiting time");
-
-		DecimalFormat dft = new DecimalFormat("###.##");
-		for (int i = 0; i < size; i++) {
-			cloudlet = list.get(i);
-			Log.print(indent + cloudlet.getCloudletId() + indent + indent);
-
-			if (cloudlet.getCloudletStatus() == Cloudlet.SUCCESS) {
-				Log.print("SUCCESS");
-
-				Log.printLine(indent + indent + cloudlet.getResourceId() + indent + indent + indent + cloudlet.getVmId()
-						+ indent + indent + dft.format(cloudlet.getActualCPUTime()) + indent + indent
-						+ dft.format(cloudlet.getExecStartTime()) + indent + indent
-						+ dft.format(cloudlet.getFinishTime()) + indent + indent
-						+ dft.format(cloudlet.getWaitingTime()));
-				totalWT += cloudlet.getWaitingTime();
-				totalET += cloudlet.getExecStartTime();
-				makespan = Math.max(makespan, cloudlet.getFinishTime());
-				totalResponseTime = cloudlet.getExecStartTime() - cloudlet.getSubmissionTime();
-			}
-		}
-		String[] data = { String.valueOf(size), String.valueOf(reqVms), dft.format(totalWT / size),
-				dft.format(totalET / size), String.valueOf(makespan), dft.format(totalResponseTime / size),
-				dft.format(size / makespan) };
-//		writeTofileObj.writeData(data);
-		Log.print("data : " + Arrays.toString(data));
-
-	}
 	
 	
 };

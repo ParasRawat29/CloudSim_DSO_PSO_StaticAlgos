@@ -17,12 +17,11 @@ public class Swarm{
 	private double maxDiffCost; //maximum value of this.getCost() - bestDove.getCost()
 	
 	protected ArrayList<Dove>swarm = new ArrayList<Dove>();
-	public static int mode = 2;
+	public static int mode = 1;
 	/**
 	 * mode = 0 -> makespan
-	 * mode = 1 -> average execution time
+	 * mode = 1 -> total execution time
 	 * mode = 2 -> throughput
-	 * 
 	 * */
 	
 	

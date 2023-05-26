@@ -29,9 +29,9 @@ public class PSOBroker extends DatacenterBroker {
 			}
 		}
 		
-		 for (double[] row : pos)
-	            System.out.println(Arrays.toString(row));
-	}
+//		 for (double[] row : pos)
+//	            System.out.println(Arrays.toString(row));
+		}
 	
 	
 	

@@ -137,7 +137,7 @@ public class Dove{
 	
 	public void updateCost() {
 		if(Swarm.mode==0)this.cost = calculateMakespanFitness(this.vmAllocations);
-		else if(Swarm.mode==1)this.cost = calculateAverageExecutionFitness(this.vmAllocations);
+		else if(Swarm.mode==1)this.cost = calculateTotalExecutionFitness(this.vmAllocations);
 		else if(Swarm.mode==2)this.cost = calculateThroughput(this.vmAllocations);
 		
 	}
@@ -146,8 +146,8 @@ public class Dove{
 		return  new DSO().calculatePredictedMakespan(allocations);
 	}
 	
-	public double calculateAverageExecutionFitness(double [][] allocations) {
-		return  new DSO().calculatePredictedAverageExecutionTime(allocations);
+	public double calculateTotalExecutionFitness(double [][] allocations) {
+		return  new DSO().calculatePredictedTotalExecutionTime(allocations);
 	}
 	
 	public double calculateThroughput(double [][] allocations){

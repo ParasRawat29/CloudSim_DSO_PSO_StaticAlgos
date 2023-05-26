@@ -6,7 +6,7 @@
 			<attribute name="module" value="true"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="lib" path="C:/Users/Home/Desktop/Cloudsim-Code-master/libs/cloudsim-3.0.3.jar"/>
-	<classpathentry kind="lib" path="C:/Users/Home/Desktop/Cloudsim-Code-master/libs/opencsv-5.7.1.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Home/Desktop/cloudsim _DSO_PSO_and_StaticAlgos/libs/cloudsim-3.0.3.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Home/Desktop/cloudsim _DSO_PSO_and_StaticAlgos/libs/opencsv-5.7.1.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

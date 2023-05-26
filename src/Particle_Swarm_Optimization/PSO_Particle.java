@@ -17,7 +17,7 @@ public class PSO_Particle{
 	/** Fitness of actual position */
 	protected double current_fitness;
 	/** Fitness of best position */
-	protected double best_fitness = Integer.MAX_VALUE;
+	protected double best_fitness;
 	
 	
 	PSO_Particle(int nt , int nv ){
@@ -36,6 +36,12 @@ public class PSO_Particle{
 		for(int i=0 ; i<noOfCloudlet ; i++) {
 			int rndvm = ThreadLocalRandom.current().nextInt(0, noOfVm);
 			position[i][rndvm]=1;
+		}
+		
+		for(int i=0 ; i<this.velocity.length ; i++) {
+			for(int j=0 ; j<this.velocity[i].length ; j++) {				
+				this.velocity[i][j] = ThreadLocalRandom.current().nextDouble(0, 1);
+			}
 		}
 		
 		// set current position as best position
@@ -80,8 +86,13 @@ public class PSO_Particle{
 	};
 	
 	public void setVelocity(double[][] v){
-		for(int i = 0; i < v.length; i++)
-			velocity[i] = v[i].clone();
+//		for(int i = 0; i < v.length; i++)
+//			velocity[i] = v[i].clone();
+		for(int i=0 ; i<v.length ; i++) {
+			for(int j=0 ; j<v[i].length ; j++) {
+				this.velocity[i][j] +=v[i][j];
+			}
+		}
 	};
 		
 	
@@ -150,7 +161,7 @@ public class PSO_Particle{
 		return  new PSO().calculatePredictedMakespan(position);
 	}
 	public double calculateAverageExecutionFitness() {
-		return  new PSO().calculatePredictedAverageExecutionTime(position);
+		return  new PSO().calculatePredictedTotalExecutionTime(position);
 	}
 	
 	public double calculateThroughput(){
