@@ -41,9 +41,9 @@ public class DataCenterCreator {
 		// 4. Create Host with its id and list of PEs and add them to the list of
 		// machines
 		int hostId = 0;
-		int ram = 64000; // host memory (MB)
-		long storage = 10000000; // host storage
-		int bw = 1000000;
+		int ram = 640000; // host memory (MB)
+		long storage = 100000000; // host storage
+		int bw = 10000000;
 
 		hostList.add(new Host(hostId, new RamProvisionerSimple(ram), new BwProvisionerSimple(bw), storage, peList,
 				new VmSchedulerTimeShared(peList))); // This is our machine

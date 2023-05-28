@@ -26,21 +26,28 @@ public class RoundRobin {
 
 	private static List<Vm> vmlist;
 
-	private static int reqTasks = 100;
-	private static int reqVms = 50;
+
+	private static int reqTasks = 1000;
+	private static int reqVms = 75;
 	private static WriteToCsv writeTofileObj;
 	
 	
 	public static void main(String[] args) {
 		writeTofileObj = new WriteToCsv("C:\\Users\\Home\\Desktop\\cloudsim _DSO_PSO_and_StaticAlgos\\src\\results\\output.csv","Round Robin");
+
+		
 		run();
-		reqTasks=200;
+//		reqTasks = 200;
+		reqVms = 100;
 		run();
-		reqTasks = 500;
+//		reqTasks = 500;
+		reqVms = 125;
 		run();
-		reqTasks = 1000;
+//		reqTasks = 1000;
+		reqVms = 150;
 		run();
-		reqTasks= 5000;
+//		reqTasks = 5000;
+		reqVms = 200;
 		run();
 
 		

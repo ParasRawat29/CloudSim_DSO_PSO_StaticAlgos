@@ -18,7 +18,7 @@ public class CalculateSimulationResults{
 			double makespan = 0.0;
 			double minVmExecutionTime = 0;
 			double[] vmExecutionTime = new double [vmList.size()];
-
+			double maxWaitingTime = 0;
 
 			DecimalFormat dft = new DecimalFormat("###.##");
 			for (int i = 0; i < size; i++) {
@@ -26,25 +26,28 @@ public class CalculateSimulationResults{
 				if (cloudlet.getCloudletStatus() == Cloudlet.SUCCESS) {
 
 					totalWT += cloudlet.getWaitingTime();
+					maxWaitingTime = Math.max(maxWaitingTime, cloudlet.getWaitingTime());
 					vmExecutionTime[cloudlet.getVmId()]+=cloudlet.getActualCPUTime();
 					makespan = Math.max(makespan, cloudlet.getFinishTime());
 				}
 			}
-			
 			for(int i=0 ; i<vmExecutionTime.length ; i++){
 				totalETofVm+=vmExecutionTime[i];
 				minVmExecutionTime = Math.min(vmExecutionTime[i], minVmExecutionTime);
 			}
 			
 			double doi = reqVms*((makespan -minVmExecutionTime) / totalETofVm);
+			
+			
+			
 			String[] data1 = {"No of Cloudlet : "+ String.valueOf(size), '\n' + "No of Vm : "+ String.valueOf(reqVms), '\n' + "Average Waiting time : "+ dft.format(totalWT / size),
-					'\n' + "Total Execution time : "+ dft.format(totalETofVm), '\n' + "Makespan : "+String.valueOf(makespan), '\n' + "Degree Of Imbalance : "+dft.format(doi),
+					'\n'+"Maximum Waiting Time : "+dft.format(maxWaitingTime),'\n' + "Total Execution time : "+ dft.format(totalETofVm), '\n' + "Makespan : " +dft.format(makespan),'\n' + "Degree Of Imbalance : "+dft.format(doi),
 					'\n' + "Throughput : "+dft.format(size / makespan) };
 			Log.print('\n');
 			Log.print( Arrays.toString(data1));
-			String[] data = {String.valueOf(size),String.valueOf(reqVms), dft.format(totalWT / size),
-					dft.format(totalETofVm),String.valueOf(makespan),dft.format(doi),
-					dft.format(reqTasks / makespan) };
+			
+			String[] data = {String.valueOf(size),String.valueOf(reqVms), dft.format(totalWT / size),dft.format(maxWaitingTime),
+					dft.format(totalETofVm),String.valueOf(makespan),dft.format(doi),dft.format(reqTasks / makespan) };
 			
 			if(writeTofileObj!=null){
 				writeTofileObj.writeData(data);

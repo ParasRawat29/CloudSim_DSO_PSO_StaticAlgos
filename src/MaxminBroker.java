@@ -1,110 +1,157 @@
 
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Arrays;
 
 import org.cloudbus.cloudsim.Cloudlet;
 import org.cloudbus.cloudsim.DatacenterBroker;
+import org.cloudbus.cloudsim.Log;
 import org.cloudbus.cloudsim.Vm;
 
-/**
- * A Broker that schedules Tasks to the VMs as per FCFS Scheduling Policy
- * 
- * @author Linda J
- *
- */
-public class MaxminBroker extends DatacenterBroker {
 
+public class MaxminBroker extends DatacenterBroker {
+	public double[][] completetionTimeMatrix;
+	public int reqTasks;
+	public int reqVms; 
 	public MaxminBroker(String name) throws Exception {
 		super(name);
 		// TODO Auto-generated constructor stub
 	}
 
-	// scheduling function
-
-	public void scheduleTaskstoVms() {
-		int reqTasks = cloudletList.size();
-		int reqVms = vmList.size();
-		// int k=0;
-
-		ArrayList<Cloudlet> clist = new ArrayList<Cloudlet>();
-		ArrayList<Vm> vlist = new ArrayList<Vm>();
-
-		for (Cloudlet cloudlet : getCloudletList()) {
-			clist.add(cloudlet);
-			// System.out.println("clist:" +clist.get(k).getCloudletId());
-			// k++;
-		}
-		// k=0;
-		for (Vm vm : getVmList()) {
-			vlist.add(vm);
-			// System.out.println("vlist:" +vlist.get(k).getId());
-			// k++;
-		}
-
-		double completionTime[][] = new double[reqTasks][reqVms];
-		double execTime[][] = new double[reqTasks][reqVms];
-		double time = 0.0;
-
-		for (int i = 0; i < reqTasks; i++) {
-			for (int j = 0; j < reqVms; j++) {
-				time = getCompletionTime(clist.get(i), vlist.get(j));
-				completionTime[i][j] = time;
-				time = getExecTime(clist.get(i), vlist.get(j));
-				execTime[i][j] = time;
-
-				System.out.print(execTime[i][j] + " ");
-
+	//scheduling function
+	
+	
+	public void scheduleTaskstoVms(){
+		reqTasks= cloudletList.size();
+		reqVms= vmList.size();
+		//int k=0;
+		//Log.printLine("req.task "+ reqTasks + " , reqVms : "+reqVms);
+		List<Cloudlet>completedTaskList = new ArrayList<Cloudlet>();
+		
+		
+		completetionTimeMatrix = new double[reqTasks][reqVms];
+		fillCompletionMatrix();
+		
+		while(completedTaskList.size() < cloudletList.size()) {
+			
+//			print(completetionTimeMatrix);
+			
+			int[] minimumTimeEachTask = getMinimumTimeEachTask();
+			
+			for(int i=0 ; i<minimumTimeEachTask.length ; i++) {
+				System.out.print(minimumTimeEachTask[i]+" , ");
 			}
-			System.out.println();
-
+			System.out.println("------");
+				
+			// cloudletid Vmid;
+			int[]maxTaskInMinList = getMaxTaskInMinList(minimumTimeEachTask);
+			int task = maxTaskInMinList[0];
+			int vm = maxTaskInMinList[1];
+			// allocate Vm to that task
+			
+			System.out.println("task chosen : "+task + " , vm of that task : "+vm);
+			
+			bindCloudletToVm(cloudletList.get(task).getCloudletId() , vmList.get(vm).getId());
+			// push task in allocatedList
+			completedTaskList.add(cloudletList.get(task));
+			
+			// updateCompletionMaxtrix
+			double time = completetionTimeMatrix[task][vm];
+			updateCompletionMatrix(task,vm,time);
+			
 		}
-
-		int maxCloudlet = 0;
-		int minVm = 0;
-		double min = -1.0d;
-
-		for (int c = 0; c < clist.size(); c++) {
-
-			for (int i = 0; i < clist.size(); i++) {
-				for (int j = 0; j < (vlist.size() - 1); j++) {
-					if (completionTime[i][j + 1] < completionTime[i][j] && completionTime[i][j + 1] > 0.0) {
-						maxCloudlet = i;
-					}
-				}
-			}
-
-			for (int j = 0; j < vlist.size(); j++) {
-				time = getExecTime(clist.get(maxCloudlet), vlist.get(j));
-				if (j == 0) {
-					min = time;
-				}
-				if (time < min && time > -1.0) {
-					minVm = j;
-					min = time;
-				}
-
-			}
-
-			bindCloudletToVm(maxCloudlet, minVm);
-			clist.remove(maxCloudlet);
-
-			for (int i = 0; i < vlist.size(); i++) {
-				completionTime[maxCloudlet][i] = -1.0;
-			}
-
-		}
-
+		
+		
+		
+	}	
+	
+	
+	private void print(double[][]mat) {
+	 for (double[] row : mat)
+        System.out.println(Arrays.toString(row));
+	 
+	 System.out.println("---------------------------\n");
 	}
-
-	private double getCompletionTime(Cloudlet cloudlet, Vm vm) {
+	
+	
+	private void updateCompletionMatrix(int task,int vm,double time) {
+		for(int j=0 ; j<reqVms ; j++) {
+			completetionTimeMatrix[task][j] = -1;
+		}
+		
+		for(int i=0 ; i<reqTasks ; i++) {
+			if(completetionTimeMatrix[i][vm]!=-1) {
+				completetionTimeMatrix[i][vm] += time;
+			}
+		}
+	}
+	
+	
+	
+	
+	private int[] getMaxTaskInMinList(int []minimumTimeEachTask) {
+		int result[]= {0,0};
+		
+		int maxTask = 0 , maxTaskVm=minimumTimeEachTask[0];
+		for(int i=0 ; i<minimumTimeEachTask.length ; i++ ) {
+			int currVm = minimumTimeEachTask[i];
+			if(completetionTimeMatrix[i][currVm] >completetionTimeMatrix[maxTask][maxTaskVm]) {
+				maxTask = i;
+				maxTaskVm = currVm;
+			}
+		}
+		
+		result[0] = maxTask;
+		result[1] = maxTaskVm;
+		
+		return result;
+		
+	}
+	
+	
+	
+	public int[] getMinimumTimeEachTask() {
+		int[]result = new int[reqTasks];
+				
+		for(int i=0 ; i<reqTasks; i++) {
+			int minVm=0;
+			for(int j=0 ; j<reqVms ; j++) {
+				if(completetionTimeMatrix[i][j] == -1) break;
+			
+				if(completetionTimeMatrix[i][j] < completetionTimeMatrix[i][minVm]) minVm = j;
+			}
+			
+			result[i] = minVm;
+		}
+				
+		return result;
+		
+	}
+	
+	
+	public void fillCompletionMatrix(){
+		
+		for(int i=0 ; i<reqTasks ; i++) {
+			for(int j=0 ; j<reqVms ; j++) {
+				completetionTimeMatrix[i][j] = (double) cloudletList.get(i).getCloudletLength() /(vmList.get(j).getMips()*vmList.get(j).getNumberOfPes());
+			}
+		}
+		
+		
+	}
+	
+	
+	
+	private double getCompletionTime(Cloudlet cloudlet, Vm vm){
 		double waitingTime = cloudlet.getWaitingTime();
-		double execTime = cloudlet.getCloudletLength() / (vm.getMips() * vm.getNumberOfPes());
-
+		double execTime = cloudlet.getCloudletLength() / (vm.getMips()*vm.getNumberOfPes());
+		
 		double completionTime = execTime + waitingTime;
-
+		
 		return completionTime;
 	}
-
-	private double getExecTime(Cloudlet cloudlet, Vm vm) {
-		return cloudlet.getCloudletLength() / (vm.getMips() * vm.getNumberOfPes());
+	
+	private double getExecTime(Cloudlet cloudlet, Vm vm){
+		return cloudlet.getCloudletLength() / (vm.getMips()*vm.getNumberOfPes());
 	}
 }

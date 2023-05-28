@@ -22,8 +22,8 @@ public class PSO{
 	/** The vmlist. */
 	private static List<Vm> vmlist;
 
-	private static int reqTasks = 200;
-	private static int reqVms = 50;
+	private static int reqTasks = 1000;
+	private static int reqVms = 200;
 	private static WriteToCsv writeTofileObj;
 	
 	private static PSOBroker broker;
@@ -84,7 +84,7 @@ public class PSO{
 		ETC_MATRIX = new double[reqTasks][reqVms];
 	        for (int i = 0; i < reqTasks; i++) {
 	            for (int j = 0; j < reqVms; j++) {
-	            	ETC_MATRIX[i][j] = (double) cloudletList.get(i).getCloudletLength() / vmlist.get(j).getMips();
+	            	ETC_MATRIX[i][j] = (double) cloudletList.get(i).getCloudletLength() /(vmlist.get(j).getMips()*vmlist.get(j).getNumberOfPes());
 	           }
 	      }
 	}

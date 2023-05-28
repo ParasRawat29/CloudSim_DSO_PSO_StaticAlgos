@@ -21,8 +21,9 @@ public class MaxMin {
 	private static List<Cloudlet> cloudletList;
 	private static List<Vm> vmlist;
 
-	private static int reqTasks = 100;
-	private static int reqVms = 50;
+
+	private static int reqTasks = 1000;
+	private static int reqVms = 75;
 	private static WriteToCsv writeTofileObj;
 
 	
@@ -30,16 +31,21 @@ public class MaxMin {
 		writeTofileObj = new WriteToCsv("C:\\Users\\Home\\Desktop\\cloudsim _DSO_PSO_and_StaticAlgos\\src\\results\\output.csv",
 				"MaxMin");
 		
-//		run();
-//		reqTasks=200;
-//		run();
-//		reqTasks = 500;
-//		run();
-//		reqTasks = 1000;
-//		run();
-		reqTasks= 5000;
 		run();
-		Log.printLine("Starting Max-Min...");
+//		reqTasks = 200;
+		reqVms = 100;
+		run();
+//		reqTasks = 500;
+		reqVms = 125;
+		run();
+//		reqTasks = 1000;
+		reqVms = 150;
+		run();
+//		reqTasks = 5000;
+		reqVms = 200;
+		run();
+
+	
 
 	
 	}
@@ -83,7 +89,7 @@ public class MaxMin {
 
 			CloudSim.stopSimulation();
 
-			CalculateSimulationResults.calulate(cloudletList, vmlist, reqTasks, reqVms,writeTofileObj);
+			CalculateSimulationResults.calulate(newList, vmlist, reqTasks, reqVms,writeTofileObj);
 
 			Log.printLine("MaxMin finished!");
 		} catch (Exception e) {

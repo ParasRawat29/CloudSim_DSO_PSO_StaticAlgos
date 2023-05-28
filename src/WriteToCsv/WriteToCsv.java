@@ -29,7 +29,7 @@ public class WriteToCsv {
 				return;
 			file = new CSVWriter(new FileWriter(new File(filePath)));
 			String[] colName = { "Algorithmn", "No of Cloudlets", "No. of Virtual Machine", "Average Waiting Time",
-					"Total Execution Time", "Makespan", "Degree Of Imbalance", "Throughput" };
+					"Maximum Waiting Time","Total Execution Time", "Makespan", "Degree Of Imbalance", "Throughput" };
 			file.writeNext(colName);
 			file.close();
 		} catch (Exception e) {

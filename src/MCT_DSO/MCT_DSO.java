@@ -1,4 +1,4 @@
-package Dove_Swarm_Optimization;
+package MCT_DSO;
 
 import java.util.Calendar;
 import java.util.List;
@@ -12,7 +12,7 @@ import org.cloudbus.cloudsim.core.CloudSim;
 import WriteToCsv.WriteToCsv;
 import Helper.*;
 
-public class DSO{
+public class MCT_DSO{
 	/** The cloudlet list. */
 	private static List<Cloudlet> cloudletList;
 
@@ -22,7 +22,7 @@ public class DSO{
 	private static int reqTasks = 1000;
 	private static int reqVms = 200;
 	private static WriteToCsv writeTofileObj;
-	
+	//254 
 	private static DSOBroker broker;
 	private static double[][] ETC_MATRIX;
 	
@@ -158,6 +158,10 @@ public class DSO{
 		return broker;
 	}
 	
+	
+	public static double getCompletionTime(int cloudletid , int vmId) {
+		return  (double) cloudletList.get(cloudletid).getCloudletLength() /(vmlist.get(vmId).getMips()*vmlist.get(vmId).getNumberOfPes());
+	}
 	
 	
 	
