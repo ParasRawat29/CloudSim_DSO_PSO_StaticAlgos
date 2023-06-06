@@ -2,6 +2,7 @@ package Helper;
 import java.util.ArrayList;
 
 import org.cloudbus.cloudsim.CloudletSchedulerSpaceShared;
+import org.cloudbus.cloudsim.CloudletSchedulerTimeShared;
 import org.cloudbus.cloudsim.Vm;
 
 
@@ -25,7 +26,7 @@ public class VmsCreator {
 		for (vmid = 0; vmid < reqVms; vmid++) {
 			// add the VMs to the vmList
 			vmlist.add(new Vm(vmid, brokerId, Utils.Mips[vmid%Utils.Mips.length], pesNumber, ram, bw, size, vmm,
-					new CloudletSchedulerSpaceShared()));
+					new CloudletSchedulerTimeShared()));
 		}
 
 //		System.out.println("VmsCreator function Executed... SUCCESS: ");

@@ -85,15 +85,13 @@ public class SJF1 {
 
 			broker.submitCloudletList(cloudletList);
 
-			broker.scheduleTaskstoVms();
 
 			CloudSim.startSimulation();
 
 			List<Cloudlet> newList = broker.getCloudletReceivedList();
-
 			CloudSim.stopSimulation();
 
-			CalculateSimulationResults.calulate(cloudletList, vmlist, reqTasks, reqVms,writeTofileObj);
+			CalculateSimulationResults.calulate(newList, vmlist, reqTasks, reqVms,writeTofileObj);
 
 			System.out.println("SJF finished!");
 		} catch (Exception e) {

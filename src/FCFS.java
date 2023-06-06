@@ -1,6 +1,6 @@
 
 
-import java.text.DecimalFormat;
+
 import java.util.Calendar;
 import java.util.List;
 
@@ -24,7 +24,7 @@ public class FCFS {
 	private static List<Vm> vmlist;
 
 	private static int reqTasks = 1000;
-	private static int reqVms = 75;
+	private static int reqVms = 50;
 	private static WriteToCsv writeTofileObj;
 
 	/**
@@ -35,17 +35,17 @@ public class FCFS {
 				"FCFS");
 	
 		run();
-//		reqTasks = 200;
-		reqVms = 100;
+		reqTasks = 200;
+//		reqVms = 100;
 		run();
-//		reqTasks = 500;
-		reqVms = 125;
+		reqTasks = 500;
+//		reqVms = 125;
 		run();
-//		reqTasks = 1000;
-		reqVms = 150;
+		reqTasks = 1000;
+//		reqVms = 150;
 		run();
-//		reqTasks = 5000;
-		reqVms = 200;
+		reqTasks = 5000;
+//		reqVms = 200;
 		run();
 		
 	}
@@ -82,7 +82,7 @@ public class FCFS {
 			broker.submitCloudletList(cloudletList);
 
 
-			broker.scheduleTaskstoVms();
+//			broker.scheduleTaskstoVms();
 
 
 			CloudSim.startSimulation();
@@ -91,7 +91,7 @@ public class FCFS {
 
 			CloudSim.stopSimulation();
 			
-			CalculateSimulationResults.calulate(newList, vmlist, reqTasks, reqVms,writeTofileObj);
+			CalculateSimulationResults.calulate(newList, vmlist, reqTasks, reqVms,null);
 
 			System.out.println("FCFS finished!");
 		} catch (Exception e) {
